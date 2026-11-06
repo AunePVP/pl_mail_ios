@@ -77,7 +77,9 @@ struct ForkSearchInsightView: View {
         .sheet(isPresented: $isChatting) {
             ForkSearchChatView(firstMessage: raw, sync: sync) { pointer in
                 isChatting = false
-                open(threadID: pointer.threadId, accountID: pointer.accountId, subject: pointer.subject ?? "")
+                open(
+                    threadID: pointer.threadId, accountID: pointer.accountId,
+                    subject: pointer.subject ?? "")
             }
         }
     }
@@ -220,9 +222,9 @@ struct ForkSearchInsightView: View {
             threadID: pointer.threadId, accountID: pointer.accountId)
     }
 
-    private func link(subject: String?, date: UTCDate?, threadID: String, accountID: String?)
-        -> some View
-    {
+    private func link(
+        subject: String?, date: UTCDate?, threadID: String, accountID: String?
+    ) -> some View {
         Button {
             open(threadID: threadID, accountID: accountID, subject: subject ?? "")
         } label: {

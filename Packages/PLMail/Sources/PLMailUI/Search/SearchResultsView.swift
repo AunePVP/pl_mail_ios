@@ -72,7 +72,7 @@ struct SearchResultsView: View {
                             onChange: { queryText = $0 }
                         )
 
-                        // FORK (FORK.md 5): best hits, events and a short answer from the server fork.
+                        // FORK (FORK.md 5): AI search panels and chat from the server fork.
                         ForkSearchInsightView(raw: raw, sync: sync, selection: $selection)
                     }
                     .background(.bar)

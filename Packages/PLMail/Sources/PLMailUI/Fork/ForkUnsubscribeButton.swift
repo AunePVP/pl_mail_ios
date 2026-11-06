@@ -32,7 +32,9 @@ actor ForkUnsubscribeCache {
     private var targets: [String: ForkUnsubscribeTarget?] = [:]
     private var unsupported = false
 
-    func target(for emailID: String, in context: ForkReaderContext) async -> ForkUnsubscribeTarget? {
+    func target(
+        for emailID: String, in context: ForkReaderContext
+    ) async -> ForkUnsubscribeTarget? {
         let key = "\(context.accountID.rawValue)#\(emailID)"
 
         if let known = targets[key] { return known }

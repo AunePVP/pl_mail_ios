@@ -41,7 +41,9 @@ struct ForkSearchChatView: View {
                     .padding(16)
                 }
                 .onChange(of: turns.count) { _, _ in
-                    if let last = turns.last { withAnimation { scroller.scrollTo(last.id, anchor: .bottom) } }
+                    if let last = turns.last {
+                        withAnimation { scroller.scrollTo(last.id, anchor: .bottom) }
+                    }
                 }
             }
             .safeAreaInset(edge: .bottom) { composer }
@@ -90,21 +92,27 @@ struct ForkSearchChatView: View {
                     .controlSize(.small)
                 }
             } else if turn.failed {
-                Text(
-                    ForkSearchInsightView.text(
-                        de: "Die KI konnte gerade nicht antworten.",
-                        en: "The AI could not answer just now."))
+                Text(Self.failedText)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             } else {
                 HStack(spacing: 6) {
                     ProgressView().controlSize(.small)
-                    Text(ForkSearchInsightView.text(de: "Sucht und denkt nach …", en: "Searching and thinking …"))
+                    Text(Self.busyText)
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
             }
         }
+    }
+
+    private static var failedText: String {
+        ForkSearchInsightView.text(
+            de: "Die KI konnte gerade nicht antworten.", en: "The AI could not answer just now.")
+    }
+
+    private static var busyText: String {
+        ForkSearchInsightView.text(de: "Sucht und denkt nach …", en: "Searching and thinking …")
     }
 
     private var composer: some View {
