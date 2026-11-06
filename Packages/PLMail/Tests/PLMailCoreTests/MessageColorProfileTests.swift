@@ -86,14 +86,15 @@ struct MessageColorProfileTests {
         )
     }
 
-    @Test("a designed message is inverted, since restyling would fight it")
-    func designedIsInverted() {
+    // FORK (FORK.md 3): designed mail is shown as sent, not inverted.
+    @Test("a designed message is shown as sent, since restyling or inverting would fight it")
+    func designedIsOriginal() {
         let designed = MessageColorProfile(
             declaresOwnColors: true, supportsDarkMode: false, hasImagery: true)
 
         #expect(
             MessageRenderStyle.choose(profile: designed, isDark: true, prefersOriginal: false)
-                == .darkInverted
+                == .original
         )
     }
 
