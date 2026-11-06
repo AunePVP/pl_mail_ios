@@ -268,6 +268,8 @@ public struct ThreadReaderView: View {
             await loader.load()
             expandNewest()
         }
+        // FORK (FORK.md 4): lets each message ask the server fork for its Unsubscribe target.
+        .environment(\.forkReaderContext, ForkReaderContext(client: client, accountID: accountID))
         // Published for the scene rather than for this view's focus: the menu
         // bar has to be live while the caret is in the find bar or nowhere at
         // all. See ``MailMessageCommands``.

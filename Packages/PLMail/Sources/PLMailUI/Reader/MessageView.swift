@@ -70,6 +70,9 @@ struct MessageView: View {
                     MessageDetailsView(message: message)
                 }
 
+                // FORK (FORK.md 4): Unsubscribe, when the server fork names a target.
+                ForkUnsubscribeButton(emailID: message.emailID)
+
                 if wasRemoteContentBlocked && isRemoteContentAllowed == false {
                     remoteContentNotice
                 }
@@ -363,8 +366,8 @@ struct MessageView: View {
             //
             // Clipped *before* it is padded: the other order rounds the corners
             // of the margin instead of the sheet, which draws nothing at all.
-            .clipShape(.rect(cornerRadius: 8, style: .continuous))
-            .padding(.horizontal, 12)
+            // FORK (FORK.md 2): full width on a phone, the inset sheet on iPad.
+            .modifier(ForkMessageBodyInset())
             .padding(.top, 8)
             // The handle the find scrolls to once it knows how far down this
             // body the match is. Separate from the card's own, because the

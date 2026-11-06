@@ -71,6 +71,9 @@ struct SearchResultsView: View {
                             raw: queryText,
                             onChange: { queryText = $0 }
                         )
+
+                        // FORK (FORK.md 5): AI search panels and chat from the server fork.
+                        ForkSearchInsightView(raw: raw, sync: sync, selection: $selection)
                     }
                     .background(.bar)
                 }
