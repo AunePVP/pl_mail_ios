@@ -104,7 +104,8 @@ private struct WebBody: UIViewRepresentable {
         controller.add(context.coordinator, name: Coordinator.heightMessage)
         controller.add(context.coordinator, name: Coordinator.findPositionMessage)
 
-        for script in [Self.heightReportingScript, Self.findScript] {
+        // FORK (FORK.md 2): fitWidthScript, see MessageBodyView+FitWidth.swift.
+        for script in [Self.fitWidthScript, Self.heightReportingScript, Self.findScript] {
             controller.addUserScript(
                 WKUserScript(
                     source: script,

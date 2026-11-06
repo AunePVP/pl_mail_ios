@@ -100,7 +100,10 @@ public enum MessageRenderStyle: Hashable, Sendable {
         guard isDark, prefersOriginal == false else { return .original }
 
         if profile.supportsDarkMode { return .darkNative }
-        if profile.declaresOwnColors { return .darkInverted }
+        // FORK (FORK.md 3): a designed message is shown as sent, like Apple Mail
+        // does, instead of `.darkInverted`. Inversion turned dark newsletters
+        // (Audi, Miles & More) light and their dark logos invisible on black.
+        if profile.declaresOwnColors { return .original }
 
         return .darkRestyled
     }

@@ -8,7 +8,8 @@ an bestehenden. Jede Fork-Stelle im Code ist markiert:
 git grep -n "FORK (FORK.md"
 ```
 
-Neue Dateien nur dieses Forks: `CLAUDE.md`, `FORK.md`, `.github/workflows/fork-build.yml`.
+Neue Dateien nur dieses Forks: `CLAUDE.md`, `FORK.md`, `.github/workflows/fork-build.yml`,
+`Packages/PLMail/Sources/PLMailUI/Reader/MessageBodyView+FitWidth.swift`.
 
 ## Abweichungen
 
@@ -28,6 +29,28 @@ nicht gewollt. Folgen: keine Push-Mitteilungen bei geschlossener App, kein Widge
 Originals, „What isn't there yet“). Mit bezahltem Konto würde der Workflow stattdessen signieren
 und zu TestFlight hochladen.
 **Kandidat fürs Original:** vielleicht (der Simulator-Teil als CI).
+
+### 2. Breite Mails auf Bildschirmbreite verkleinern
+
+Neue Datei `Packages/PLMail/Sources/PLMailUI/Reader/MessageBodyView+FitWidth.swift` (`fitWidthScript`),
+eingehängt in `MessageBodyView.swift` (eine Zeile, markiert). Ist eine Mail breiter als der Bildschirm,
+werden ihre Tabellen normal gesetzt und der `body` per `zoom` passend verkleinert, wie Apple Mail es tut.
+Mails, die passen, bleiben unverändert.
+
+**Grund:** Newsletter sind feste 600–700-px-Tabellen. Das Original lässt Tabellen einzeln seitlich
+scrollen (`display: block; overflow-x: auto`); bei verschachtelten Tabellen und abgeschaltetem Scrollen
+der Webansicht war die rechte Seite einfach abgeschnitten (Miles & More, 2026-11-06).
+**Kandidat fürs Original:** ja (dort erst Issue, nur nach Freigabe).
+
+### 3. Gestaltete Mails im Dunkelmodus wie gesendet
+
+`MessageColorProfile.swift`, `MessageRenderStyle.choose`: eine Mail mit eigenen Farben, aber ohne eigene
+Dunkel-Regeln wird `.original` (hell, wie gesendet) statt `.darkInverted`. Test angepasst
+(`MessageColorProfileTests.designedIsOriginal`).
+
+**Grund:** Die Invertierung machte dunkel gestaltete Newsletter (Audi) hell und dunkle Logos
+unsichtbar auf Schwarz (Miles & More). Apple Mail zeigt solche Mails wie gesendet.
+**Kandidat fürs Original:** ja, als Fehlerbericht (dort erst Issue, nur nach Freigabe).
 
 ## Update vom Original
 
