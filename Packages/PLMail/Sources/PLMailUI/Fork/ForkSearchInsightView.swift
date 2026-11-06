@@ -22,6 +22,8 @@ struct ForkSearchInsightView: View {
     @State private var answer: ForkSearchAnswer?
     @State private var isAnswering = false
     @State private var isExpanded = true
+    @State private var isSupported = false
+    @State private var isChatting = false
 
     private var hasContent: Bool {
         best.isEmpty == false || trips.isEmpty == false || answer != nil || isAnswering
@@ -29,24 +31,55 @@ struct ForkSearchInsightView: View {
 
     var body: some View {
         Group {
-            if hasContent {
-                DisclosureGroup(isExpanded: $isExpanded) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        if trips.isEmpty == false { tripsPanel }
-                        if best.isEmpty == false { bestPanel }
-                        if let answer { answerPanel(answer) } else if isAnswering { answering }
+            if isSupported {
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        if hasContent {
+                            Button {
+                                withAnimation { isExpanded.toggle() }
+                            } label: {
+                                Label(
+                                    Self.text(de: "KI-Suche", en: "AI search"),
+                                    systemImage: isExpanded ? "chevron.down" : "chevron.right"
+                                )
+                                .font(.caption.weight(.semibold))
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(.tint)
+                        }
+
+                        Spacer()
+
+                        Button {
+                            isChatting = true
+                        } label: {
+                            Label(Self.text(de: "KI fragen", en: "Ask AI"), systemImage: "sparkles")
+                                .font(.caption.weight(.semibold))
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
                     }
-                    .padding(.top, 6)
-                } label: {
-                    Label(Self.text(de: "KI-Suche", en: "AI search"), systemImage: "sparkles")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.tint)
+
+                    if hasContent && isExpanded {
+                        VStack(alignment: .leading, spacing: 10) {
+                            if trips.isEmpty == false { tripsPanel }
+                            if best.isEmpty == false { bestPanel }
+                            if let answer { answerPanel(answer) } else if isAnswering { answering }
+                        }
+                        .padding(.top, 6)
+                    }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
             }
         }
         .task(id: raw) { await load() }
+        .sheet(isPresented: $isChatting) {
+            ForkSearchChatView(firstMessage: raw, sync: sync) { pointer in
+                isChatting = false
+                open(threadID: pointer.threadId, accountID: pointer.accountId, subject: pointer.subject ?? "")
+            }
+        }
     }
 
     // MARK: - Loading
@@ -68,6 +101,7 @@ struct ForkSearchInsightView: View {
             guard Task.isCancelled == false else { return }
             trips = quick.trips ?? []
             best = quick.best ?? []
+            isSupported = true
         } else {
             return
         }

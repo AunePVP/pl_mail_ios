@@ -116,3 +116,29 @@ public struct ForkSearchInsight: JMAPMethod {
         arguments = Arguments(query: query, parts: parts)
     }
 }
+
+/// `ForkSearch/chat` — one turn of the web's AI search chat, answered whole.
+public struct ForkSearchChat: JMAPMethod {
+    public static let name = "ForkSearch/chat"
+    public static let capability = Capability.mail
+
+    public struct Arguments: Encodable, Sendable {
+        public var message: String
+        public var conversation: String?
+    }
+
+    public struct Result: Decodable, Sendable {
+        public var conversation: String?
+        public var queries: [String]
+        public var answer: String?
+        public var important: [ForkThreadPointer]
+        public var results: [ForkThreadPointer]
+        public var error: Bool
+    }
+
+    public var arguments: Arguments
+
+    public init(message: String, conversation: String?) {
+        arguments = Arguments(message: message, conversation: conversation)
+    }
+}

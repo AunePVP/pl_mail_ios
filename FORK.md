@@ -62,7 +62,7 @@ unsichtbar auf Schwarz (Miles & More). Apple Mail zeigt solche Mails wie gesende
 ### 4. Abmelden-Knopf
 
 `PLMailUI/Fork/ForkUnsubscribeButton.swift`: unter dem Kopf einer aufgeklappten Mail ein Knopf
-„Abmelden“, wenn der Server-Fork über `ForkUnsubscribe/get` (Server-FORK.md 20) ein Ziel nennt. Weblink
+„Abmelden“, wenn der Server-Fork über `ForkUnsubscribe/get` (Server-FORK.md 22) ein Ziel nennt. Weblink
 öffnet sich in Safari, `mailto:` im Mailprogramm des Systems. Antworten pro Sitzung gecacht; ein Server
 ohne die Methode (`unknownMethod`) wird nicht weiter gefragt. Eingehängt mit je einer markierten Zeile in
 `MessageView.swift` (Knopf) und `ThreadReaderView.swift` (`forkReaderContext` in der Umgebung).
@@ -74,10 +74,16 @@ Methoden-Typen in `JMAPKit/Methods/ForkMethods.swift`.
 
 `PLMailUI/Fork/ForkSearchInsightView.swift`, eine markierte Zeile in `SearchResultsView.swift`: über den
 Suchtreffern ein aufklappbares Feld „KI-Suche“ mit „Termine dazu“, „Beste Treffer“ (Reranker) und
-„Kurz gesagt“ (Sprachmodell) aus `ForkSearch/insight` (Server-FORK.md 20). Termine und beste Treffer
+„Kurz gesagt“ (Sprachmodell) aus `ForkSearch/insight` (Server-FORK.md 22). Termine und beste Treffer
 zuerst, die Antwort danach. Ohne Fork-Server nichts.
 
-**Grund:** Wie in der Web-App (Server-FORK.md 16 und 18); die Suche der App ist sonst reine Volltextsuche.
+Daneben der Knopf **„KI fragen“**: öffnet `PLMailUI/Fork/ForkSearchChatView.swift`, den KI-Such-Chat der
+Web-App (Server-FORK.md 20) als Blatt, über `ForkSearch/chat`. Der Suchtext ist die erste Frage,
+Rückfragen behalten die Unterhaltung; jede Antwort kommt nach einigen Sekunden ganz (JMAP streamt nicht),
+mit bis zu fünf Mails zum Öffnen.
+
+**Grund:** Wie in der Web-App (Server-FORK.md 16, 18 und 20); die Suche der App ist sonst reine
+Volltextsuche.
 
 ### 6. PR-Build in Release
 
